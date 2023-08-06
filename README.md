@@ -1,6 +1,6 @@
 # MP-SENet: A Speech Enhancement Model with Parallel Denoising of Magnitude and Phase Spectra
 ### Ye-Xin Lu, Yang Ai, Zhen-Hua Ling
-In our [paper](https://arxiv.org/abs/2304.13270), we proposed MP-SENet: a TF-domain monaural SE model with parallel magnitude and phase spectra denoising.
+In our [paper](https://arxiv.org/abs/2305.13686), we proposed MP-SENet: a TF-domain monaural SE model with parallel magnitude and phase spectra denoising.
 We will provide our implementation as open source in this repository.
 
 **Abstract:** 
