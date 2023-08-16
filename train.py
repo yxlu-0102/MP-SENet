@@ -36,7 +36,7 @@ def train(rank, a, h):
         num_params = 0
         for p in generator.parameters():
             num_params += p.numel()
-        print(num_params)
+        print("Generator Parameters : ", num_params)
         os.makedirs(a.checkpoint_path, exist_ok=True)
         os.makedirs(os.path.join(a.checkpoint_path, 'logs'), exist_ok=True)
         print("checkpoints directory : ", a.checkpoint_path)
