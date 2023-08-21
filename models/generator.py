@@ -146,15 +146,6 @@ class MPNet(nn.Module):
         return denoised_mag, denoised_pha, denoised_com
 
 
-def metric_loss(metric_ref, metrics_gen):
-    loss = 0
-    for metric_gen in metrics_gen:
-        metric_loss = F.mse_loss(metric_ref, metric_gen.flatten())
-        loss += metric_loss
-
-    return loss
-
-
 def phase_losses(phase_r, phase_g, h):
 
     dim_freq = h.n_fft // 2 + 1
