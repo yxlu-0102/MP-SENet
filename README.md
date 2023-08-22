@@ -19,7 +19,7 @@ This source code is only for the MP-SENet accepted by Interspeech 2023.
 
 ## Training
 ```
-python train.py --config config.json
+CUDA_VISIBLE_DEVICES=0,1 python train.py --config config.json
 ```
 Checkpoints and copy of the configuration file are saved in `cp_mpsenet` directory by default.<br>
 You can change the path by adding `--checkpoint_path` option.
