@@ -41,3 +41,15 @@ You can change the path by adding `--output_dir` option.
 ## Acknowledgements
 We referred to [HiFiGAN](https://github.com/jik876/hifi-gan), [NSPP](https://github.com/YangAi520/NSPP) 
 and [CMGAN](https://github.com/ruizhecao96/CMGAN) to implement this.
+
+## Citation
+```
+@inproceedings{lu23e_interspeech,
+  author={Ye-Xin Lu and Yang Ai and Zhen-Hua Ling},
+  title={{MP-SENet: A Speech Enhancement Model with Parallel Denoising of Magnitude and Phase Spectra}},
+  year=2023,
+  booktitle={Proc. INTERSPEECH 2023},
+  pages={3834--3838},
+  doi={10.21437/Interspeech.2023-1441}
+}
+```
