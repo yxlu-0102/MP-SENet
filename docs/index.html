@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- <meta charset="utf-8"> -->
+  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+  <!-- Replace the content tag with appropriate information -->
+  <!-- <meta name="description" content="Audio Super Resolution">
+  <meta property="og:title" content="Towards Efficient and High-Quality Bandwidth Extension with Parallel Amplitude-Phase Prediction"/>
+  <meta property="og:description" content="Towards Efficient and High-Quality Bandwidth Extension with Parallel Amplitude-Phase Prediction"/>
+  <meta property="og:url" content="https://pages.cs.huji.ac.il/adiyoss-lab/aero/"/> -->
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1250X630-->
+  <!-- <meta property="og:image" content="/static/image/proposed-model.png" />
+  <meta property="og:image:width" content="1250"/>
+  <meta property="og:image:height" content="630"/> -->
+
+
+  <!-- <meta name="twitter:title" content="AERO: Audio Super Resolution in the Spectral Domain">
+  <meta name="twitter:description" content="AERO: Audio Super Resolution in the Spectral DomainG"> -->
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1250X600-->
+  <!-- <meta name="twitter:image" content="static/images/image/proposed-model.png">
+  <meta name="twitter:card" content="summary_large_image"> -->
+  <!-- Keywords for your paper to be indexed by-->
+  <!-- <meta name="keywords" content="Audio Speech Super-Resolution Machine Learning">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+
+
+  <title>Explicit Estimation of Magnitude and Phase Spectra in Parallel for High-Quality Speech Enhancement</title>
+  <!-- <link rel="icon" type="image/x-icon" href="static/images/favicon.ico"> -->
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+  rel="stylesheet">
+
+  <link rel="stylesheet" href="https://yxlu-0102.github.io/static/css/bulma.min.css">
+  <link rel="stylesheet" href="https://yxlu-0102.github.io/static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="https://yxlu-0102.github.io/static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="https://yxlu-0102.github.io/static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="https://yxlu-0102.github.io/static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="https://yxlu-0102.github.io/static/js/fontawesome.all.min.js"></script>
+  <script src="https://yxlu-0102.github.io/static/js/bulma-carousel.min.js"></script>
+  <script src="https://yxlu-0102.github.io/static/js/bulma-slider.min.js"></script>
+  <script src="https://yxlu-0102.github.io/static/js/index.js"></script>
+</head>
+<body>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Explicit Estimation of Magnitude and Phase Spectra in Parallel for High-Quality Speech Enhancement</h1>
+            <div class="is-size-5 publication-authors">
+              <!-- Paper authors -->
+              <span class="author-block">
+                <a>Ye-Xin Lu</a>,</span>
+                <span class="author-block">
+                  <a href="http://staff.ustc.edu.cn/~yangai" target="_blank">Yang Ai</a>,</span>
+                <span class="author-block">
+                  <a href="http://staff.ustc.edu.cn/~zhling" target="_blank">Zheng-Hua Ling</a>,</span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">National Engineering Research Center of Speech and Language Information Processing <br> University of Science and Technology of China<br></span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!--                   Code Link. -->
+                <span class="link-block">
+                  <a href="https://github.com/yxlu-0102/MP-SENet" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+                </span>
+                <!--                   ArXiv Link -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2308.08926" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>Paper</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Paper abstract -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Phase information has a significant impact on speech perceptual quality and intelligibility.
+            However, existing speech enhancement methods encounter limitations in explicit phase estimation due to the non-structural nature and wrapping characteristics of the phase, 
+            leading to a bottleneck in enhanced speech quality.         
+            To overcome the above issue, in this paper, we proposed MP-SENet, a novel Speech Enhancement Network which explicitly enhances Magnitude and Phase spectra in parallel.
+            The proposed MP-SENet adopts a codec architecture in which the encoder and decoder are bridged by time-frequency Transformers along both time and frequency dimensions.
+            The encoder aims to encode time-frequency representations derived from the input distorted magnitude and phase spectra. The decoder comprises dual-stream magnitude and phase decoders, 
+            directly enhancing magnitude and wrapped phase spectra by incorporating a magnitude estimation architecture and a phase parallel estimation architecture, respectively.
+            To train the MP-SENet model effectively, we define multi-level loss functions, including mean square error and perceptual metric loss of magnitude spectra, anti-wrapping loss of phase spectra, 
+            as well as mean square error and consistency loss of short-time complex spectra.
+            Experimental results demonstrate that our proposed MP-SENet excels in high-quality speech enhancement across multiple tasks, including speech denoising, dereverberation, and bandwidth extension.
+            Compared to existing phase-aware speech enhancement methods, it successfully avoids the bidirectional compensation effect between the magnitude and phase, leading to a better harmonic restoration.
+            Notably, for the speech denoising task, the MP-SENet yields a state-of-the-art performance with a PESQ of 3.60 on the public VoiceBank+DEMAND dataset.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+<br>
+<section class="hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-centered">
+        <h2 class="title is-3">I. Audio Samples of Speech Denoising</h2>
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <table align = "center" style="text-align: center;">
+
+    <tr>
+      <td style="text-align: center; width: 100px;"><b>Scene</b></th>
+      <td style="text-align: center;"><b>Noisy</b></th>
+      <td style="text-align: center;"><b>Clean</b></th>
+      <td style="text-align: center;"><b>DB-AIAT</b></th>
+      <td style="text-align: center;"><b>CMGAN</b></th>
+      <td style="text-align: center;"><b>MP-SENet (Ours)</b></th>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px;"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p232_032_noisy.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p232_032_clean.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p232_032_dbaiat.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p232_032_cmgan.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p232_032_mpsenet.png" width="250px" height="128px"></td>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px; height: 50px; line-height: 50px;"><b>Cafeteria</b></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p232_032_noisy.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p232_032_clean.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p232_032_dbaiat.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p232_032_cmgan.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p232_032_mpsenet.wav" type="audio/wav"></audio></td>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px;"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p232_043_noisy.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p232_043_clean.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p232_043_dbaiat.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p232_043_cmgan.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p232_043_mpsenet.png" width="250px" height="128px"></td>
+    </tr>
+  
+    <tr>
+      <td style="text-align: center; width: 100px; height: 50px; line-height: 50px;"><b>PSquare</b></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p232_043_noisy.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p232_043_clean.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p232_043_dbaiat.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p232_043_cmgan.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p232_043_mpsenet.wav" type="audio/wav"></audio></td>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px;"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p232_056_noisy.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p232_056_clean.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p232_056_dbaiat.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p232_056_cmgan.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p232_056_mpsenet.png" width="250px" height="128px"></td>
+    </tr>
+    
+    <tr>
+      <td style="text-align: center; width: 100px; height: 50px; line-height: 50px;"><b>Living</b></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p232_056_noisy.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p232_056_clean.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p232_056_dbaiat.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p232_056_cmgan.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p232_056_mpsenet.wav" type="audio/wav"></audio></td>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px;"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p257_367_noisy.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p257_367_clean.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p257_367_dbaiat.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p257_367_cmgan.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p257_367_mpsenet.png" width="250px" height="128px"></td>
+    </tr>
+    
+    <tr>
+      <td style="text-align: center; width: 100px; height: 50px; line-height: 50px;"><b>Bus</b></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p257_367_noisy.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p257_367_clean.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p257_367_dbaiat.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p257_367_cmgan.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p257_367_mpsenet.wav" type="audio/wav"></audio></td>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px;"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p257_418_noisy.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p257_418_clean.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p257_418_dbaiat.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p257_418_cmgan.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/denoising/figs/p257_418_mpsenet.png" width="250px" height="128px"></td>
+    </tr>
+    
+    <tr>
+      <td style="text-align: center; width: 100px; height: 50px; line-height: 50px;"><b>Office</b></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p257_418_noisy.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p257_418_clean.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p257_418_dbaiat.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p257_418_cmgan.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/denoising/wavs/p257_418_mpsenet.wav" type="audio/wav"></audio></td>
+    </tr>
+  </table>
+</section>
+
+<hr>
+<section class="hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-centered">
+        <h2 class="title is-3">II. Audio Samples of Speech Dereverberation</h2>
+      </div>
+    </div>
+  </div>
+  <br>
+  <table align = "center" style="text-align: center;">
+
+    <tr>
+      <td style="text-align: center; width: 100px;"><b></b></th>
+      <td style="text-align: center;"><b>Reverberant</b></th>
+      <td style="text-align: center;"><b>Clean</b></th>
+      <td style="text-align: center;"><b>SkipConvNet</b></th>
+      <td style="text-align: center;"><b>CMGAN</b></th>
+      <td style="text-align: center;"><b>MP-SENet (Ours)</b></th>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px;"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/dereverberation/figs/p232_007_reverb.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/dereverberation/figs/p232_007_clean.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/dereverberation/figs/p232_007_skipconvnet.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/dereverberation/figs/p232_007_cmgan.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/dereverberation/figs/p232_007_mpsenet.png" width="250px" height="128px"></td>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px; height: 50px; line-height: 50px;"><b>Sample 1</b></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/dereverberation/wavs/p232_007_reverb.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/dereverberation/wavs/p232_007_clean.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/dereverberation/wavs/p232_007_skipconvnet.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/dereverberation/wavs/p232_007_cmgan.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/dereverberation/wavs/p232_007_mpsenet.wav" type="audio/wav"></audio></td>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px;"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/dereverberation/figs/p257_186_reverb.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/dereverberation/figs/p257_186_clean.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/dereverberation/figs/p257_186_skipconvnet.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/dereverberation/figs/p257_186_cmgan.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/dereverberation/figs/p257_186_mpsenet.png" width="250px" height="128px"></td>
+    </tr>
+  
+    <tr>
+      <td style="text-align: center; width: 100px; height: 50px; line-height: 50px;"><b>Sample 2</b></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/dereverberation/wavs/p257_186_reverb.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/dereverberation/wavs/p257_186_clean.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/dereverberation/wavs/p257_186_skipconvnet.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/dereverberation/wavs/p257_186_cmgan.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/dereverberation/wavs/p257_186_mpsenet.wav" type="audio/wav"></audio></td>
+    </tr>
+
+  </table>
+</section>
+
+<hr>
+<section class="hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-centered">
+        <h2 class="title is-3">III. Audio Samples of Bandwidth Extension Targeting 16 kHz</h2>
+      </div>
+    </div>
+  </div>
+  <br>
+  <table align = "center" style="text-align: center;">
+
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-centered">
+          <h2 class="title is-5">Single-speaker</h2>
+        </div>
+      </div>
+    </div>
+    <br>
+    <tr>
+      <td style="text-align: center; width: 100px;"><b>Input sr</b></th>
+      <td style="text-align: center;"><b>Narrowband</b></th>
+      <td style="text-align: center;"><b>Wideband</b></th>
+      <td style="text-align: center;"><b>CMGAN</b></th>
+      <td style="text-align: center;"><b>MP-SENet (Ours)</b></th>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px;"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/figs/p225_356_narrowband.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/figs/p225_356_wideband.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/figs/p225_356_cmgan.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/figs/p225_356_mpsenet.png" width="250px" height="128px"></td>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px; height: 50px; line-height: 50px;"><b>8 kHz</b></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/wavs/p225_356_narrowband.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/wavs/p225_356_wideband.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/wavs/p225_356_cmgan.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/wavs/p225_356_mpsenet.wav" type="audio/wav"></audio></td>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px;"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/figs/p225_366_narrowband.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/figs/p225_366_wideband.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/figs/p225_366_cmgan.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/figs/p225_366_mpsenet.png" width="250px" height="128px"></td>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px; height: 50px; line-height: 50px;"><b>4 kHz</b></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/wavs/p225_366_narrowband.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/wavs/p225_366_wideband.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/wavs/p225_366_cmgan.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/wavs/p225_366_mpsenet.wav" type="audio/wav"></audio></td>
+    </tr>
+  </table>
+  <br>
+  <table align = "center" style="text-align: center;">
+
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-centered">
+          <h2 class="title is-5">Multi-speaker</h2>
+        </div>
+      </div>
+    </div>
+    <br>
+    <tr>
+      <td style="text-align: center; width: 100px;"><b>Input sr</b></th>
+      <td style="text-align: center;"><b>Narrowband</b></th>
+      <td style="text-align: center;"><b>Wideband</b></th>
+      <td style="text-align: center;"><b>CMGAN</b></th>
+      <td style="text-align: center;"><b>MP-SENet (Ours)</b></th>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px;"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/figs/p363_120_narrowband.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/figs/p363_120_wideband.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/figs/p363_120_cmgan.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/figs/p363_120_mpsenet.png" width="250px" height="128px"></td>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px; height: 50px; line-height: 50px;"><b>8 kHz</b></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/wavs/p363_120_narrowband.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/wavs/p363_120_wideband.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/wavs/p363_120_cmgan.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/wavs/p363_120_mpsenet.wav" type="audio/wav"></audio></td>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px;"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/figs/p361_124_narrowband.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/figs/p361_124_wideband.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/figs/p361_124_cmgan.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/figs/p361_124_mpsenet.png" width="250px" height="128px"></td>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px; height: 50px; line-height: 50px;"><b>4 kHz</b></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/wavs/p361_124_narrowband.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/wavs/p361_124_wideband.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/wavs/p361_124_cmgan.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/bandwidth_extension_new/wavs/p361_124_mpsenet.wav" type="audio/wav"></audio></td>
+    </tr>
+  </table>    
+</section>
+
+<hr>
+<section class="hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-centered">
+        <h2 class="title is-3">IV. Analysis Experiments of Speech Denoising at Different SNRs</h2>
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <table align = "center" style="text-align: center;">
+
+    <tr>
+      <td style="text-align: center; width: 100px;"><b>SNR</b></th>
+      <td style="text-align: center;"><b>Noisy</b></th>
+      <td style="text-align: center;"><b>Clean</b></th>
+      <td style="text-align: center;"><b>CMGAN</b></th>
+      <td style="text-align: center;"><b>MP-SENet (Ours)</b></th>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px;"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/analysis_study/figs/p232_071_noisy_2.5dB.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/analysis_study/figs/p232_071_clean.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/analysis_study/figs/p232_071_cmgan_2.5dB.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/analysis_study/figs/p232_071_mpsenet_2.5dB.png" width="250px" height="128px"></td>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px; height: 50px; line-height: 50px;"><b>2.5 dB</b></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/analysis_study/wavs/p232_071_noisy_2.5dB.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/analysis_study/wavs/p232_071_clean.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/analysis_study/wavs/p232_071_cmgan_2.5dB.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/analysis_study/wavs/p232_071_mpsenet_2.5dB.wav" type="audio/wav"></audio></td>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px;"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/analysis_study/figs/p232_071_noisy_7.5dB.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/analysis_study/figs/p232_071_clean.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/analysis_study/figs/p232_071_cmgan_7.5dB.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/analysis_study/figs/p232_071_mpsenet_7.5dB.png" width="250px" height="128px"></td>
+    </tr>
+  
+    <tr>
+      <td style="text-align: center; width: 100px; height: 50px; line-height: 50px;"><b>7.5 dB</b></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/analysis_study/wavs/p232_071_noisy_7.5dB.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/analysis_study/wavs/p232_071_clean.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/analysis_study/wavs/p232_071_cmgan_7.5dB.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/analysis_study/wavs/p232_071_mpsenet_7.5dB.wav" type="audio/wav"></audio></td>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px;"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/analysis_study/figs/p232_071_noisy_12.5dB.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/analysis_study/figs/p232_071_clean.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/analysis_study/figs/p232_071_cmgan_12.5dB.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/analysis_study/figs/p232_071_mpsenet_12.5dB.png" width="250px" height="128px"></td>
+    </tr>
+    
+    <tr>
+      <td style="text-align: center; width: 100px; height: 50px; line-height: 50px;"><b>12.5 dB</b></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/analysis_study/wavs/p232_071_noisy_12.5dB.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/analysis_study/wavs/p232_071_clean.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/analysis_study/wavs/p232_071_cmgan_12.5dB.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/analysis_study/wavs/p232_071_mpsenet_12.5dB.wav" type="audio/wav"></audio></td>
+    </tr>
+
+    <tr>
+      <td style="text-align: center; width: 100px;"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/analysis_study/figs/p232_071_noisy_17.5dB.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/analysis_study/figs/p232_071_clean.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/analysis_study/figs/p232_071_cmgan_17.5dB.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/analysis_study/figs/p232_071_mpsenet_17.5dB.png" width="250px" height="128px"></td>
+    </tr>
+    
+    <tr>
+      <td style="text-align: center; width: 100px; height: 50px; line-height: 50px;"><b>17.5 dB</b></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/analysis_study/wavs/p232_071_noisy_17.5dB.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/analysis_study/wavs/p232_071_clean.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/analysis_study/wavs/p232_071_cmgan_17.5dB.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/analysis_study/wavs/p232_071_mpsenet_17.5dB.wav" type="audio/wav"></audio></td>
+    </tr>
+  </table>
+</section>
+
+<hr>
+<section class="hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-centered">
+        <h2 class="title is-3">V. Ablation Study (Conducted on Speech Denoising)</h2>
+      </div>
+    </div>
+  </div>
+  <br>
+  <table align = "center" style="text-align: center;">
+    <tr>
+      <td style="text-align: center;"><b>Noisy</b></th>
+      <td style="text-align: center;"><b>Clean</b></th>
+      <td style="text-align: center;"><b>MP-SENet (Ours)</b></th>
+      <td style="text-align: center;"><b>w/o Transformer</b></th>
+    </tr>
+
+    <tr>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/ablation_study/figs/p232_052_noisy.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/ablation_study/figs/p232_052_clean.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/ablation_study/figs/p232_052_mpsenet.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/ablation_study/figs/p232_052_conformer.png" width="250px" height="128px"></td>
+    </tr>
+
+    <tr>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/ablation_study/wavs/p232_052_noisy.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/ablation_study/wavs/p232_052_clean.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/ablation_study/wavs/p232_052_mpsenet.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/ablation_study/wavs/p232_052_conformer.wav" type="audio/wav"></audio></td>
+    </tr>
+  </table>
+  <br>
+  <table align = "center" style="text-align: center;">
+    <tr>
+      <td style="text-align: center;"><b>Parallel Transformer</b></th>
+      <td style="text-align: center;"><b>Frequency to Time</b></th>
+      <td style="text-align: center;"><b>w/o Magnitude Decoder</b></th>
+      <td style="text-align: center;"><b>w/o Phase Decoder</b></th>
+    </tr>
+    <tr>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/ablation_study/figs/p232_052_parallel_transformer.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/ablation_study/figs/p232_052_freq2time.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/ablation_study/figs/p232_052_wo_mag_dec.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/ablation_study/figs/p232_052_wo_pha_dec.png" width="250px" height="128px"></td>
+    </tr>
+
+    <tr>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/ablation_study/wavs/p232_052_parallel_transformer.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/ablation_study/wavs/p232_052_freq2time.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/ablation_study/wavs/p232_052_wo_mag_dec.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/ablation_study/wavs/p232_052_wo_pha_dec.wav" type="audio/wav"></audio></td>
+    </tr>
+  </table>  
+  <br>
+  <table align = "center" style="text-align: center;">
+    <tr>
+      <td style="text-align: center;"><b>w/o Phase Loss</b></th>
+      <td style="text-align: center;"><b>w/o Complex Loss</b></th>
+      <td style="text-align: center;"><b>w/o Consistency Loss</b></th>
+      <td style="text-align: center;"><b>w/o Metric Discriminator</b></th>
+    </tr>
+    <tr>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/ablation_study/figs/p232_052_wo_phase_loss.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/ablation_study/figs/p232_052_wo_complex_loss.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/ablation_study/figs/p232_052_wo_consist_loss.png" width="250px" height="128px"></td>
+      <td><img src="https://yxlu-0102.github.io/MP-SENet/ablation_study/figs/p232_052_wo_disc.png" width="250px" height="128px"></td>
+    </tr>
+
+    <tr>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/ablation_study/wavs/p232_052_wo_phase_loss.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/ablation_study/wavs/p232_052_wo_complex_loss.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/ablation_study/wavs/p232_052_wo_consist_loss.wav" type="audio/wav"></audio></td>
+      <td><audio controls="" style='display: inline-block; width: 250px; height: 50px;'><source src="https://yxlu-0102.github.io/MP-SENet/ablation_study/wavs/p232_052_wo_disc.wav" type="audio/wav"></audio></td>
+    </tr>
+  </table>  
+</section>
+
+<hr>
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@inproceedings{lu2023mp,
+      title={{MP-SENet}: A Speech Enhancement Model with Parallel Denoising of Magnitude and Phase Spectra}, 
+      author={Lu, Ye-Xin and Ai, Yang and Ling, Zhen-Hua},
+      booktitle={Proc. Interspeech},
+      pages={3834--3838},
+      year={2023}
+    }</code></pre>
+    <pre><code>@article{lu2023explicit,
+      title={Explicit Estimation of Magnitude and Phase Spectra in Parallel for High-Quality Speech Enhancement},
+      author={Lu, Ye-Xin and Ai, Yang and Ling, Zhen-Hua},
+      journal={arXiv preprint arXiv:2308.08926},
+      year={2023}
+    }</code></pre>
+  </div>
+</section>
+<!-- Statcounter tracking code -->
+  
+<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+    <!-- End of Statcounter Code -->
+
+  </body>
+  </html>
