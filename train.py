@@ -269,7 +269,7 @@ def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--group_name', default=None)
-    parser.add_argument('--input_clean_wavs_dir', default='Voicebank+DEMAND/wavs_clean')
+    parser.add_argument('--input_clean_wavs_dir', default='VoiceBank+DEMAND/wavs_clean')
     parser.add_argument('--input_noisy_wavs_dir', default='VoiceBank+DEMAND/wavs_noisy')
     parser.add_argument('--input_training_file', default='VoiceBank+DEMAND/training.txt')
     parser.add_argument('--input_validation_file', default='VoiceBank+DEMAND/test.txt')
