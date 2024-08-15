@@ -7,6 +7,7 @@ import json
 from re import S
 import torch
 import librosa
+import numpy as np
 from env import AttrDict
 from datasets.dataset import mag_pha_stft, mag_pha_istft
 from models.generator import MPNet
@@ -14,6 +15,60 @@ import soundfile as sf
 
 h = None
 device = None
+
+def wsola_chunked_processing(audio, sr, chunk_size, hop_size, mod_func):
+    # Calculate the number of chunks needed for the input audio
+    num_chunks = int(np.ceil(len(audio) / hop_size))
+
+    # Initialize the output array
+    output = np.array([], dtype=audio.dtype)
+
+    # WSOLA chunked processing loop
+    for i in range(num_chunks):
+        # Calculate the start and end points of the current chunk
+        start = i * hop_size
+        end = min(start + chunk_size, len(audio))
+
+        # Get the current chunk and apply the modifying function
+        chunk = audio[start:end]
+        modified_chunk = mod_func(chunk)
+
+        # Find the most similar chunk in the input audio for the overlapping region
+        if i > 0:
+            overlap_start = start - hop_size
+            overlap_end = start
+
+            best_match = None
+            best_distance = float('inf')
+            for j in range(num_chunks):
+                if i == j:
+                    continue
+
+                # Calculate the start and end points of the comparison chunk
+                start_j = j * hop_size
+                end_j = min(start_j + chunk_size, len(audio))
+
+                # Get the overlapping region of the comparison chunk
+                overlap_chunk_j = audio[max(start_j, overlap_start):min(end_j, overlap_end)]
+
+                # Compute the distance between the overlapping regions
+                distance = np.sum((output[-hop_size:] - overlap_chunk_j) ** 2)
+
+                # Update the best match if necessary
+                if distance < best_distance:
+                    best_match = overlap_chunk_j
+                    best_distance = distance
+
+            # Overlap and add the best matching chunk to the output
+            output[-hop_size:] = best_match
+
+        # Append the modified chunk to the output
+        output = np.append(output, modified_chunk[hop_size:])
+
+    # Normalize the output
+    output /= np.max(np.abs(output))
+
+    return output, sr
 
 def load_checkpoint(filepath, device):
     assert os.path.isfile(filepath)
@@ -38,7 +93,7 @@ def inference(a):
     model.eval()
 
     with torch.no_grad():
-        noisy_wav, _ = librosa.load(a.input_noisy_wav, h.sampling_rate)
+        noisy_wav, _ = librosa.load(a.input_noisy_wav, sr=h.sampling_rate)
 
         def denoise(noisy_wav):
             noisy_wav = torch.FloatTensor(noisy_wav).to(device)
