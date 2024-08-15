@@ -36,30 +36,17 @@ def wsola_chunked_processing(audio, sr, chunk_size, hop_size, mod_func):
             # For the first chunk, append the entire modified chunk
             output = np.append(output, modified_chunk)
         else:
-            # Find the most similar chunk in the input audio for the overlapping region
-            overlap_start = start - hop_size
-            overlap_end = start
+            # Find the best overlapping point using cross-correlation
+            overlap = output[-hop_size:]
+            correlation = np.correlate(modified_chunk[:hop_size*2], overlap, mode='valid')
+            best_offset = np.argmax(correlation)
 
-            best_match = None
-            best_distance = float('inf')
-            for j in range(max(0, start - 5*hop_size), start, hop_size):
-                # Get the overlapping region of the comparison chunk
-                overlap_chunk_j = audio[j:j+hop_size]
-
-                # Compute the distance between the overlapping regions
-                distance = np.sum((output[-hop_size:] - overlap_chunk_j) ** 2)
-
-                # Update the best match if necessary
-                if distance < best_distance:
-                    best_match = overlap_chunk_j
-                    best_distance = distance
-
-            # Overlap and add the best matching chunk to the output
+            # Overlap and add using the best offset
             crossfade = np.linspace(0, 1, hop_size)
-            output[-hop_size:] = output[-hop_size:] * (1 - crossfade) + best_match * crossfade
+            output[-hop_size:] = output[-hop_size:] * (1 - crossfade) + modified_chunk[best_offset:best_offset+hop_size] * crossfade
 
             # Append the non-overlapping part of the modified chunk to the output
-            output = np.append(output, modified_chunk[hop_size:])
+            output = np.append(output, modified_chunk[best_offset+hop_size:])
 
         # Move to the next chunk
         start = end - hop_size
