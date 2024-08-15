@@ -35,44 +35,34 @@ def inference(a):
     state_dict = load_checkpoint(a.checkpoint_file, device)
     model.load_state_dict(state_dict['generator'])
 
-    with open(a.input_test_file, 'r', encoding='utf-8') as fi:
-        test_indexes = [x.split('|')[0] for x in fi.read().split('\n') if len(x) > 0]
-
-    os.makedirs(a.output_dir, exist_ok=True)
-
     model.eval()
 
     with torch.no_grad():
-        for i, index in enumerate(test_indexes):
-            print(index)
-            noisy_wav, _ = librosa.load(os.path.join(a.input_noisy_wavs_dir, index+'.wav'), h.sampling_rate)
+        noisy_wav, _ = librosa.load(a.input_noisy_wav, h.sampling_rate)
 
-            def denoise(noisy_wav):
-                noisy_wav = torch.FloatTensor(noisy_wav).to(device)
-                norm_factor = torch.sqrt(len(noisy_wav) / torch.sum(noisy_wav ** 2.0)).to(device)
-                noisy_wav = (noisy_wav * norm_factor).unsqueeze(0)
-                noisy_amp, noisy_pha, noisy_com = mag_pha_stft(noisy_wav, h.n_fft, h.hop_size, h.win_size, h.compress_factor)
-                amp_g, pha_g, com_g = model(noisy_amp, noisy_pha)
-                audio_g = mag_pha_istft(amp_g, pha_g, h.n_fft, h.hop_size, h.win_size, h.compress_factor)
-                audio_g = audio_g / norm_factor
-                return audio_g.cpu().numpy()
+        def denoise(noisy_wav):
+            noisy_wav = torch.FloatTensor(noisy_wav).to(device)
+            norm_factor = torch.sqrt(len(noisy_wav) / torch.sum(noisy_wav ** 2.0)).to(device)
+            noisy_wav = (noisy_wav * norm_factor).unsqueeze(0)
+            noisy_amp, noisy_pha, noisy_com = mag_pha_stft(noisy_wav, h.n_fft, h.hop_size, h.win_size, h.compress_factor)
+            amp_g, pha_g, com_g = model(noisy_amp, noisy_pha)
+            audio_g = mag_pha_istft(amp_g, pha_g, h.n_fft, h.hop_size, h.win_size, h.compress_factor)
+            audio_g = audio_g / norm_factor
+            return audio_g.cpu().numpy()
 
-            audio_g = wsola_chunked_processing(
-                noisy_wav, sr=h.sampling_rate, chunk_size=h.sampling_rate, hop_size=1024, mod_func=denoise
-            )
-            output_file = os.path.join(a.output_dir, index+'.wav')
+        audio_g = wsola_chunked_processing(
+            noisy_wav, sr=h.sampling_rate, chunk_size=h.sampling_rate, hop_size=1024, mod_func=denoise
+        )
 
-            sf.write(output_file, audio_g.squeeze(), h.sampling_rate, 'PCM_16')
+        sf.write(a.output_file, audio_g.squeeze(), h.sampling_rate, 'PCM_16')
 
 
 def main():
     print('Initializing Inference Process..')
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input_clean_wavs_dir', default='VoiceBank+DEMAND/wavs_clean')
-    parser.add_argument('--input_noisy_wavs_dir', default='VoiceBank+DEMAND/wav_noisy')
-    parser.add_argument('--input_test_file', default='VoiceBank+DEMAND/test.txt')
-    parser.add_argument('--output_dir', default='generated_files')
+    parser.add_argument('--input_noisy_wav', required=True, help='Path to the input noisy wav file')
+    parser.add_argument('--output_file', required=True, help='Path to the output denoised wav file')
     parser.add_argument('--checkpoint_file', required=True)
     a = parser.parse_args()
 
