@@ -92,8 +92,11 @@ def inference(a):
             audio_g = audio_g / norm_factor
             return audio_g.cpu().numpy()
 
+        chunk_size_samples = int(a.chunk_size * h.sampling_rate)
+        hop_size_samples = int(a.hop_size * h.sampling_rate)
+        
         audio_g = wsola_chunked_processing(
-            noisy_wav, sr=h.sampling_rate, chunk_size=h.sampling_rate, hop_size=1024, mod_func=denoise
+            noisy_wav, sr=h.sampling_rate, chunk_size=chunk_size_samples, hop_size=hop_size_samples, mod_func=denoise
         )
 
         sf.write(a.output_file, audio_g.squeeze(), h.sampling_rate, 'PCM_16')
@@ -106,6 +109,8 @@ def main():
     parser.add_argument('--input_noisy_wav', required=True, help='Path to the input noisy wav file')
     parser.add_argument('--output_file', required=True, help='Path to the output denoised wav file')
     parser.add_argument('--checkpoint_file', required=True)
+    parser.add_argument('--chunk_size', type=float, default=1.0, help='Chunk size for WSOLA processing in seconds')
+    parser.add_argument('--hop_size', type=float, default=0.05, help='Hop size for WSOLA processing in seconds')
     a = parser.parse_args()
 
     config_file = os.path.join(os.path.split(a.checkpoint_file)[0], 'config.json')
