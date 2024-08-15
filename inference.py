@@ -33,17 +33,17 @@ def wsola_chunked_processing(audio, sr, chunk_size, hop_size, mod_func):
         chunk = audio[start:end]
         modified_chunk = mod_func(chunk)
 
-        # Find the most similar chunk in the input audio for the overlapping region
-        if i > 0:
+        if i == 0:
+            # For the first chunk, append the entire modified chunk
+            output = np.append(output, modified_chunk)
+        else:
+            # Find the most similar chunk in the input audio for the overlapping region
             overlap_start = start - hop_size
             overlap_end = start
 
             best_match = None
             best_distance = float('inf')
-            for j in range(num_chunks):
-                if i == j:
-                    continue
-
+            for j in range(max(0, i-5), i):  # Look at the 5 previous chunks
                 # Calculate the start and end points of the comparison chunk
                 start_j = j * hop_size
                 end_j = min(start_j + chunk_size, len(audio))
@@ -60,15 +60,16 @@ def wsola_chunked_processing(audio, sr, chunk_size, hop_size, mod_func):
                     best_distance = distance
 
             # Overlap and add the best matching chunk to the output
-            output[-hop_size:] = best_match
+            crossfade = np.linspace(0, 1, hop_size)
+            output[-hop_size:] = output[-hop_size:] * (1 - crossfade) + best_match * crossfade
 
-        # Append the modified chunk to the output
-        output = np.append(output, modified_chunk[hop_size:])
+            # Append the non-overlapping part of the modified chunk to the output
+            output = np.append(output, modified_chunk[hop_size:])
 
     # Normalize the output
     output /= np.max(np.abs(output))
 
-    return output, sr
+    return output
 
 def load_checkpoint(filepath, device):
     assert os.path.isfile(filepath)
