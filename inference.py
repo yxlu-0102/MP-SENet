@@ -17,23 +17,22 @@ h = None
 device = None
 
 def wsola_chunked_processing(audio, sr, chunk_size, hop_size, mod_func):
-    # Calculate the number of chunks needed for the input audio
-    num_chunks = int(np.ceil(len(audio) / hop_size))
-
     # Initialize the output array
     output = np.array([], dtype=audio.dtype)
 
+    # Initialize the start point of the first chunk
+    start = 0
+
     # WSOLA chunked processing loop
-    for i in range(num_chunks):
-        # Calculate the start and end points of the current chunk
-        start = i * hop_size
+    while start < len(audio):
+        # Calculate the end point of the current chunk
         end = min(start + chunk_size, len(audio))
 
         # Get the current chunk and apply the modifying function
         chunk = audio[start:end]
         modified_chunk = mod_func(chunk)
 
-        if i == 0:
+        if start == 0:
             # For the first chunk, append the entire modified chunk
             output = np.append(output, modified_chunk)
         else:
@@ -43,13 +42,9 @@ def wsola_chunked_processing(audio, sr, chunk_size, hop_size, mod_func):
 
             best_match = None
             best_distance = float('inf')
-            for j in range(max(0, i-5), i):  # Look at the 5 previous chunks
-                # Calculate the start and end points of the comparison chunk
-                start_j = j * hop_size
-                end_j = min(start_j + chunk_size, len(audio))
-
+            for j in range(max(0, start - 5*hop_size), start, hop_size):
                 # Get the overlapping region of the comparison chunk
-                overlap_chunk_j = audio[max(start_j, overlap_start):min(end_j, overlap_end)]
+                overlap_chunk_j = audio[j:j+hop_size]
 
                 # Compute the distance between the overlapping regions
                 distance = np.sum((output[-hop_size:] - overlap_chunk_j) ** 2)
@@ -65,6 +60,9 @@ def wsola_chunked_processing(audio, sr, chunk_size, hop_size, mod_func):
 
             # Append the non-overlapping part of the modified chunk to the output
             output = np.append(output, modified_chunk[hop_size:])
+
+        # Move to the next chunk
+        start = end - hop_size
 
     # Normalize the output
     output /= np.max(np.abs(output))
