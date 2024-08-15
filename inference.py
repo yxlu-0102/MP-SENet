@@ -24,13 +24,14 @@ def wsola_chunked_processing(audio, sr, chunk_size, hop_size, mod_func):
     start = 0
 
     # WSOLA chunked processing loop
-    while start < len(audio):
+    while start < len(audio)-hop_size:
         # Calculate the end point of the current chunk
         end = min(start + chunk_size, len(audio))
 
         # Get the current chunk and apply the modifying function
         chunk = audio[start:end]
-        modified_chunk = mod_func(chunk)
+        modified_chunk = mod_func(chunk).squeeze()
+        print(modified_chunk.shape)
 
         if start == 0:
             # For the first chunk, append the entire modified chunk
