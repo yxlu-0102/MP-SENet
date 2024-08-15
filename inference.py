@@ -46,17 +46,23 @@ def inference(a):
         for i, index in enumerate(test_indexes):
             print(index)
             noisy_wav, _ = librosa.load(os.path.join(a.input_noisy_wavs_dir, index+'.wav'), h.sampling_rate)
-            noisy_wav = torch.FloatTensor(noisy_wav).to(device)
-            norm_factor = torch.sqrt(len(noisy_wav) / torch.sum(noisy_wav ** 2.0)).to(device)
-            noisy_wav = (noisy_wav * norm_factor).unsqueeze(0)
-            noisy_amp, noisy_pha, noisy_com = mag_pha_stft(noisy_wav, h.n_fft, h.hop_size, h.win_size, h.compress_factor)
-            amp_g, pha_g, com_g = model(noisy_amp, noisy_pha)
-            audio_g = mag_pha_istft(amp_g, pha_g, h.n_fft, h.hop_size, h.win_size, h.compress_factor)
-            audio_g = audio_g / norm_factor
 
+            def denoise(noisy_wav):
+                noisy_wav = torch.FloatTensor(noisy_wav).to(device)
+                norm_factor = torch.sqrt(len(noisy_wav) / torch.sum(noisy_wav ** 2.0)).to(device)
+                noisy_wav = (noisy_wav * norm_factor).unsqueeze(0)
+                noisy_amp, noisy_pha, noisy_com = mag_pha_stft(noisy_wav, h.n_fft, h.hop_size, h.win_size, h.compress_factor)
+                amp_g, pha_g, com_g = model(noisy_amp, noisy_pha)
+                audio_g = mag_pha_istft(amp_g, pha_g, h.n_fft, h.hop_size, h.win_size, h.compress_factor)
+                audio_g = audio_g / norm_factor
+                return audio_g.cpu().numpy()
+
+            audio_g = wsola_chunked_processing(
+                noisy_wav, sr=h.sampling_rate, chunk_size=h.sampling_rate, hop_size=1024, mod_func=denoise
+            )
             output_file = os.path.join(a.output_dir, index+'.wav')
 
-            sf.write(output_file, audio_g.squeeze().cpu().numpy(), h.sampling_rate, 'PCM_16')
+            sf.write(output_file, audio_g.squeeze(), h.sampling_rate, 'PCM_16')
 
 
 def main():
