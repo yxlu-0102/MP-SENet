@@ -31,7 +31,6 @@ def wsola_chunked_processing(audio, sr, chunk_size, hop_size, mod_func):
         # Get the current chunk and apply the modifying function
         chunk = audio[start:end]
         modified_chunk = mod_func(chunk).squeeze()
-        print(modified_chunk.shape)
 
         if start == 0:
             # For the first chunk, append the entire modified chunk
