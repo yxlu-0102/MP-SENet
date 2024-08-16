@@ -25,12 +25,31 @@ Checkpoints and copy of the configuration file are saved in the `cp_mpsenet` dir
 You can change the path by adding `--checkpoint_path` option.
 
 ## Inference
+The `inference.py` script is used for running inference on noisy audio files using the trained MP-SENet model. Here's how to use it:
+
 ```
-python inference.py --checkpoint_file [generator checkpoint file path]
+python inference.py --input_noisy_wav [path_to_noisy_wav] --output_file [path_to_output_wav] --checkpoint_file [generator checkpoint file path] [--chunk_size CHUNK_SIZE] [--hop_size HOP_SIZE]
 ```
-You can also use the pretrained best checkpoint file we provide in `best_ckpt/g_best`.<br>
-Generated wav files are saved in `generated_files` by default.<br>
-You can change the path by adding `--output_dir` option.
+
+### Parameters:
+- `--input_noisy_wav`: Path to the input noisy wav file (required)
+- `--output_file`: Path to the output denoised wav file (required)
+- `--checkpoint_file`: Path to the generator checkpoint file (required)
+- `--chunk_size`: Chunk size for WSOLA processing in seconds (default: 1.0)
+- `--hop_size`: Hop size for WSOLA processing in seconds (default: 0.05)
+
+### Notes:
+- You can use the pretrained best checkpoint file we provide in `best_ckpt/g_best`.
+- The script uses WSOLA (Waveform Similarity Overlap-Add) chunked processing for efficient memory usage, allowing it to process long audio files.
+- The chunk size and hop size can be adjusted to balance between processing speed and memory usage.
+- The output audio is automatically normalized to prevent clipping.
+
+Example usage:
+```
+python inference.py --input_noisy_wav noisy_speech.wav --output_file denoised_speech.wav --checkpoint_file best_ckpt/g_best --chunk_size 2.0 --hop_size 0.1
+```
+
+This command will denoise the audio file 'noisy_speech.wav' using the model checkpoint in 'best_ckpt/g_best', processing the audio in 2-second chunks with a 0.1-second hop size, and save the result as 'denoised_speech.wav'.
 
 ## Model Structure
 ![model](Figures/model_short_version.png)
