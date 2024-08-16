@@ -17,39 +17,44 @@ h = None
 device = None
 
 def wsola_chunked_processing(audio, sr, chunk_size, hop_size, mod_func):
-    # Initialize the output array
-    output = np.array([], dtype=audio.dtype)
+    # Check if chunk_size is larger than the audio length
+    if chunk_size >= len(audio):
+        # Process the entire audio in one go
+        output = mod_func(audio).squeeze()
+    else:
+        # Initialize the output array
+        output = np.array([], dtype=audio.dtype)
 
-    # Initialize the start point of the first chunk
-    start = 0
+        # Initialize the start point of the first chunk
+        start = 0
 
-    # WSOLA chunked processing loop
-    while start < len(audio)-hop_size:
-        # Calculate the end point of the current chunk
-        end = min(start + chunk_size, len(audio))
+        # WSOLA chunked processing loop
+        while start < len(audio)-hop_size:
+            # Calculate the end point of the current chunk
+            end = min(start + chunk_size, len(audio))
 
-        # Get the current chunk and apply the modifying function
-        chunk = audio[start:end]
-        modified_chunk = mod_func(chunk).squeeze()
+            # Get the current chunk and apply the modifying function
+            chunk = audio[start:end]
+            modified_chunk = mod_func(chunk).squeeze()
 
-        if start == 0:
-            # For the first chunk, append the entire modified chunk
-            output = np.append(output, modified_chunk)
-        else:
-            # Find the best overlapping point using cross-correlation
-            overlap = output[-hop_size:]
-            correlation = np.correlate(modified_chunk[:hop_size*2], overlap, mode='valid')
-            best_offset = np.argmax(correlation)
+            if start == 0:
+                # For the first chunk, append the entire modified chunk
+                output = np.append(output, modified_chunk)
+            else:
+                # Find the best overlapping point using cross-correlation
+                overlap = output[-hop_size:]
+                correlation = np.correlate(modified_chunk[:hop_size*2], overlap, mode='valid')
+                best_offset = np.argmax(correlation)
 
-            # Overlap and add using the best offset
-            crossfade = np.linspace(0, 1, hop_size)
-            output[-hop_size:] = output[-hop_size:] * (1 - crossfade) + modified_chunk[best_offset:best_offset+hop_size] * crossfade
+                # Overlap and add using the best offset
+                crossfade = np.linspace(0, 1, hop_size)
+                output[-hop_size:] = output[-hop_size:] * (1 - crossfade) + modified_chunk[best_offset:best_offset+hop_size] * crossfade
 
-            # Append the non-overlapping part of the modified chunk to the output
-            output = np.append(output, modified_chunk[best_offset+hop_size:])
+                # Append the non-overlapping part of the modified chunk to the output
+                output = np.append(output, modified_chunk[best_offset+hop_size:])
 
-        # Move to the next chunk
-        start = end - hop_size
+            # Move to the next chunk
+            start = end - hop_size
 
     # Normalize the output
     output /= np.max(np.abs(output))
