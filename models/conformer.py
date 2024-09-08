@@ -1,4 +1,3 @@
-import torch
 import torch.nn as nn
 from einops.layers.torch import Rearrange
 
@@ -74,13 +73,3 @@ class ConformerBlock(nn.Module):
         x = x + 0.5 * self.ffm2(x)
         x = self.post_norm(x)
         return x
-
-
-def main():
-    x = torch.ones(10, 100, 64)
-    conformer = ConformerBlock(dim=64)
-    print(conformer(x))
-
-
-if __name__ == '__main__':
-    main()
