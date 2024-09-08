@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
-
+import sys
+sys.path.append("..")
 import glob
 import os
 import argparse
@@ -8,9 +9,10 @@ from re import S
 import torch
 import librosa
 from env import AttrDict
-from datasets.dataset import mag_pha_stft, mag_pha_istft
-from models.generator import MPNet
+from dataset import mag_pha_stft, mag_pha_istft
+from models.model import MPNet
 import soundfile as sf
+from rich.progress import track
 
 h = None
 device = None
@@ -35,17 +37,15 @@ def inference(a):
     state_dict = load_checkpoint(a.checkpoint_file, device)
     model.load_state_dict(state_dict['generator'])
 
-    with open(a.input_test_file, 'r', encoding='utf-8') as fi:
-        test_indexes = [x.split('|')[0] for x in fi.read().split('\n') if len(x) > 0]
+    test_indexes = os.listdir(a.input_noisy_wavs_dir)
 
     os.makedirs(a.output_dir, exist_ok=True)
 
     model.eval()
 
     with torch.no_grad():
-        for i, index in enumerate(test_indexes):
-            print(index)
-            noisy_wav, _ = librosa.load(os.path.join(a.input_noisy_wavs_dir, index+'.wav'), h.sampling_rate)
+        for index in track(test_indexes):
+            noisy_wav, _ = librosa.load(os.path.join(a.input_noisy_wavs_dir, index), sr=h.sampling_rate)
             noisy_wav = torch.FloatTensor(noisy_wav).to(device)
             norm_factor = torch.sqrt(len(noisy_wav) / torch.sum(noisy_wav ** 2.0)).to(device)
             noisy_wav = (noisy_wav * norm_factor).unsqueeze(0)
@@ -54,7 +54,7 @@ def inference(a):
             audio_g = mag_pha_istft(amp_g, pha_g, h.n_fft, h.hop_size, h.win_size, h.compress_factor)
             audio_g = audio_g / norm_factor
 
-            output_file = os.path.join(a.output_dir, index+'.wav')
+            output_file = os.path.join(a.output_dir, index)
 
             sf.write(output_file, audio_g.squeeze().cpu().numpy(), h.sampling_rate, 'PCM_16')
 
@@ -63,10 +63,8 @@ def main():
     print('Initializing Inference Process..')
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input_clean_wavs_dir', default='VoiceBank+DEMAND/wavs_clean')
-    parser.add_argument('--input_noisy_wavs_dir', default='VoiceBank+DEMAND/wav_noisy')
-    parser.add_argument('--input_test_file', default='VoiceBank+DEMAND/test.txt')
-    parser.add_argument('--output_dir', default='generated_files')
+    parser.add_argument('--input_noisy_wavs_dir', default='VoiceBank+DEMAND/testset_noisy')
+    parser.add_argument('--output_dir', default='../generated_files')
     parser.add_argument('--checkpoint_file', required=True)
     a = parser.parse_args()
 
@@ -91,4 +89,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
