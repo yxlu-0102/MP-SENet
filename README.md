@@ -4,12 +4,20 @@ In our [paper](https://arxiv.org/abs/2305.13686), we proposed MP-SENet: a TF-dom
 We provide our implementation as open source in this repository.
 
 **Abstract:** 
-This paper proposes MP-SENet, a novel Speech Enhancement Network which directly denoises Magnitude and Phase spectra in parallel. The proposed MP-SENet adopts a codec architecture in which the encoder and decoder are bridged by convolution-augmented transformers. The encoder aims to encode time-frequency representations from the input noisy magnitude and phase spectra. The decoder is composed of parallel magnitude mask decoder and phase decoder, directly recovering clean magnitude spectra and clean-wrapped phase spectra by incorporating learnable sigmoid activation and parallel phase estimation architecture, respectively. Multi-level losses defined on magnitude spectra, phase spectra, short-time complex spectra, and time-domain waveforms are used to train the MP-SENet model jointly. Experimental results show that our proposed MP-SENet achieves a **PESQ of 3.50** on the public VoiceBank+DEMAND dataset and outperforms existing advanced SE methods.
+Phase information has a significant impact on speech perceptual quality and intelligibility.
+However, existing speech enhancement methods encounter limitations in explicit phase estimation due to the non-structural nature and wrapping characteristics of the phase, leading to a bottleneck in enhanced speech quality.
+To overcome the above issue, in this paper, we proposed MP-SENet, a novel Speech Enhancement Network that explicitly enhances Magnitude and Phase spectra in parallel.
+The proposed MP-SENet comprises a Transformer-embedded encoder-decoder architecture.
+The encoder aims to encode the input distorted magnitude and phase spectra into time-frequency representations, which are further fed into time-frequency Transformers for alternatively capturing time and frequency dependencies.
+The decoder comprises a magnitude mask decoder and a phase decoder, directly enhancing magnitude and wrapped phase spectra by incorporating a magnitude masking architecture and a phase parallel estimation architecture, respectively. 
+Multi-level loss functions explicitly defined on the magnitude spectra, wrapped phase spectra, and short-time complex spectra are adopted to jointly train the MP-SENet model. 
+A metric discriminator is further employed to compensate for the incomplete correlation between these losses and human auditory perception.
+Experimental results demonstrate that our proposed MP-SENet achieves state-of-the-art performance across multiple speech enhancement tasks, including speech denoising, dereverberation, and bandwidth extension.
+Compared to existing phase-aware speech enhancement methods, it further mitigates the compensation effect between the magnitude and phase by explicit phase estimation, elevating the perceptual quality of enhanced speech.
+Remarkably, for the speech denoising task, the proposed MP-SENet yields a PESQ of 3.60 on the VoiceBank+DEMAND dataset and 3.62 on the DNS challenge dataset.
 
 A long-version MP-SENet is available on [arxiv](https://arxiv.org/abs/2308.08926) now.
 Audio samples can be found [here](http://yxlu-0102.github.io/MP-SENet).
-
-This source code is only for the MP-SENet accepted by Interspeech 2023.
 
 ## Pre-requisites
 1. Python >= 3.6.
@@ -49,6 +57,13 @@ and [CMGAN](https://github.com/ruizhecao96/CMGAN) to implement this.
   author={Lu, Ye-Xin and Ai, Yang and Ling, Zhen-Hua},
   booktitle={Proc. Interspeech},
   pages={3834--3838},
+  year={2023}
+}
+
+@article{lu2023explicit,
+  title={Explicit estimation of magnitude and phase spectra in parallel for high-quality speech enhancement},
+  author={Lu, Ye-Xin and Ai, Yang and Ling, Zhen-Hua},
+  journal={arXiv preprint arXiv:2308.08926},
   year={2023}
 }
 ```
