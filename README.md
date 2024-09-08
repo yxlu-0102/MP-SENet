@@ -40,10 +40,10 @@ Generated wav files are saved in `generated_files` by default.<br>
 You can change the path by adding `--output_dir` option.
 
 ## Model Structure
-![model](Figures/model_short_version.png)
+![model](Figures/model.png)
 
 ## Comparison with other SE models
-![comparison](Figures/table_short_version.png)
+![comparison](Figures/table.png)
 
 ## Acknowledgements
 We referred to [HiFiGAN](https://github.com/jik876/hifi-gan), [NSPP](https://github.com/YangAi520/NSPP) 
