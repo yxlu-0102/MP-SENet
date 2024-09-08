@@ -14,7 +14,7 @@ Multi-level loss functions explicitly defined on the magnitude spectra, wrapped 
 A metric discriminator is further employed to compensate for the incomplete correlation between these losses and human auditory perception.
 Experimental results demonstrate that our proposed MP-SENet achieves state-of-the-art performance across multiple speech enhancement tasks, including speech denoising, dereverberation, and bandwidth extension.
 Compared to existing phase-aware speech enhancement methods, it further mitigates the compensation effect between the magnitude and phase by explicit phase estimation, elevating the perceptual quality of enhanced speech.
-**Remarkably, for the speech denoising task, the proposed MP-SENet yields a PESQ of 3.60 on the VoiceBank+DEMAND dataset and 3.62 on the DNS challenge dataset.**
+Remarkably, for the speech denoising task, the proposed MP-SENet yields a PESQ of **3.60** on the VoiceBank+DEMAND dataset and **3.62** on the DNS challenge dataset.
 
 A long-version MP-SENet is available on [arxiv](https://arxiv.org/abs/2308.08926) now.
 Audio samples can be found [here](http://yxlu-0102.github.io/MP-SENet).
