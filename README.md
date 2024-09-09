@@ -1,7 +1,7 @@
 # Explicit Estimation of Magnitude and Phase Spectra in Parallel for High-Quality Speech Enhancement
 ### Ye-Xin Lu, Yang Ai, Zhen-Hua Ling
-In our [paper](https://arxiv.org/abs/2305.13686), we proposed MP-SENet: a TF-domain monaural SE model with parallel magnitude and phase spectra denoising.
-A [long-version](https://arxiv.org/abs/2308.08926) MP-SENet was extended to the speech denoising, dereverberation, and bandwidth extension tasks.
+In our [paper](https://arxiv.org/abs/2305.13686), we proposed MP-SENet: a TF-domain monaural SE model with parallel magnitude and phase spectra denoising.<br>
+A [long-version](https://arxiv.org/abs/2308.08926) MP-SENet was extended to the speech denoising, dereverberation, and bandwidth extension tasks.<br>
 Audio samples can be found at the [demo website](http://yxlu-0102.github.io/MP-SENet).<br>
 We provide our implementation as open source in this repository.
 
