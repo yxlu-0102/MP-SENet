@@ -35,9 +35,14 @@ You can change the path by adding `--checkpoint_path` option.
 ```
 python inference.py --checkpoint_file [generator checkpoint file path]
 ```
-You can also use the pretrained best checkpoint file we provide in `best_ckpt/g_best`.<br>
-Generated wav files are saved in `generated_files` by default.<br>
-You can change the path by adding `--output_dir` option.
+You can also use the pretrained best checkpoint files we provide in the `best_ckpt` directory.
+<br>
+Generated wav files are saved in `generated_files` by default.
+You can change the path by adding `--output_dir` option.<br>
+Here is an example:
+```
+python inference.py --checkpoint_file best_ckpt/g_best_vb --output_dir generated_files/MP-SENet_VB
+```
 
 ## Model Structure
 ![model](Figures/model.png)
