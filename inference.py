@@ -6,6 +6,7 @@ import os
 import argparse
 import json
 from re import S
+import numpy as np
 import torch
 import librosa
 from env import AttrDict
@@ -43,21 +44,36 @@ def inference(a):
 
     model.eval()
 
+    max_chunk_duration = 10  # 10 seconds cutoff
+    chunk_size = int(max_chunk_duration * h.sampling_rate)
     with torch.no_grad():
         for index in track(test_indexes):
             noisy_wav, _ = librosa.load(os.path.join(a.input_noisy_wavs_dir, index), sr=h.sampling_rate)
-            noisy_wav = torch.FloatTensor(noisy_wav).to(device)
-            norm_factor = torch.sqrt(len(noisy_wav) / torch.sum(noisy_wav ** 2.0)).to(device)
-            noisy_wav = (noisy_wav * norm_factor).unsqueeze(0)
-            noisy_amp, noisy_pha, noisy_com = mag_pha_stft(noisy_wav, h.n_fft, h.hop_size, h.win_size, h.compress_factor)
-            amp_g, pha_g, com_g = model(noisy_amp, noisy_pha)
-            audio_g = mag_pha_istft(amp_g, pha_g, h.n_fft, h.hop_size, h.win_size, h.compress_factor)
-            audio_g = audio_g / norm_factor
+            
+            # Always process in chunks
+            num_chunks = int(np.ceil(len(noisy_wav) / chunk_size))
+            audio_chunks = []
+            
+            for i in range(num_chunks):
+                start = int(i * chunk_size)
+                end = int(min((i + 1) * chunk_size, len(noisy_wav)))
+                chunk = noisy_wav[start:end]
+                
+                chunk = torch.FloatTensor(chunk).to(device)
+                norm_factor = torch.sqrt(len(chunk) / torch.sum(chunk ** 2.0)).to(device)
+                chunk = (chunk * norm_factor).unsqueeze(0)
 
+                noisy_amp, noisy_pha, _ = mag_pha_stft(chunk, h.n_fft, h.hop_size, h.win_size, h.compress_factor)
+                amp_g, pha_g, _ = model(noisy_amp, noisy_pha)
+                chunk_g = mag_pha_istft(amp_g, pha_g, h.n_fft, h.hop_size, h.win_size, h.compress_factor)
+
+                chunk_g = chunk_g / norm_factor
+                audio_chunks.append(chunk_g.squeeze().cpu().numpy())
+            # Concatenate all chunks (will be one chunk if audio was < 10s)
+            audio_g = np.concatenate(audio_chunks)
+            
             output_file = os.path.join(a.output_dir, index)
-
-            sf.write(output_file, audio_g.squeeze().cpu().numpy(), h.sampling_rate, 'PCM_16')
-
+            sf.write(output_file, audio_g, h.sampling_rate, 'PCM_16')
 
 def main():
     print('Initializing Inference Process..')
