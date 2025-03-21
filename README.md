@@ -5,8 +5,9 @@ A [long-version](https://arxiv.org/abs/2308.08926) MP-SENet was extended to the 
 Audio samples can be found at the [demo website](http://yxlu-0102.github.io/MP-SENet).<br>
 We provide our implementation as open source in this repository.
 
-## Note
-There is a bug in our code. If you intend to retrain the model, it’s strongly recommended to set `batch_first=True` in the `MultiHeadAttention` module inside [transformer.py](models/transformer.py), which can significantly reduce the memory usage of the model.
+## ⚠️ Note
+There is a small bug in our code, but it does not affect the overall performance of the model. 
+If you intend to retrain the model, it’s **strongly recommended** to set `batch_first=True` in the `MultiHeadAttention` module inside [transformer.py](models/transformer.py), which can significantly reduce the memory usage of the model.
 
 ## Pre-requisites
 1. Python >= 3.6.
