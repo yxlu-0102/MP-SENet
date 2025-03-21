@@ -5,18 +5,8 @@ A [long-version](https://arxiv.org/abs/2308.08926) MP-SENet was extended to the 
 Audio samples can be found at the [demo website](http://yxlu-0102.github.io/MP-SENet).<br>
 We provide our implementation as open source in this repository.
 
-**Abstract:** 
-Phase information has a significant impact on speech perceptual quality and intelligibility.
-However, existing speech enhancement methods encounter limitations in explicit phase estimation due to the non-structural nature and wrapping characteristics of the phase, leading to a bottleneck in enhanced speech quality.
-To overcome the above issue, in this paper, we proposed MP-SENet, a novel Speech Enhancement Network that explicitly enhances Magnitude and Phase spectra in parallel.
-The proposed MP-SENet comprises a Transformer-embedded encoder-decoder architecture.
-The encoder aims to encode the input distorted magnitude and phase spectra into time-frequency representations, which are further fed into time-frequency Transformers for alternatively capturing time and frequency dependencies.
-The decoder comprises a magnitude mask decoder and a phase decoder, directly enhancing magnitude and wrapped phase spectra by incorporating a magnitude masking architecture and a phase parallel estimation architecture, respectively. 
-Multi-level loss functions explicitly defined on the magnitude spectra, wrapped phase spectra, and short-time complex spectra are adopted to jointly train the MP-SENet model. 
-A metric discriminator is further employed to compensate for the incomplete correlation between these losses and human auditory perception.
-Experimental results demonstrate that our proposed MP-SENet achieves state-of-the-art performance across multiple speech enhancement tasks, including speech denoising, dereverberation, and bandwidth extension.
-Compared to existing phase-aware speech enhancement methods, it further mitigates the compensation effect between the magnitude and phase by explicit phase estimation, elevating the perceptual quality of enhanced speech.
-Remarkably, for the speech denoising task, the proposed MP-SENet yields a PESQ of **3.60** on the VoiceBank+DEMAND dataset and **3.62** on the DNS challenge dataset.
+## Note
+There is a bug in our code. If you intend to retrain the model, it’s strongly recommended to set `batch_first=True` in the `MultiHeadAttention` module inside [transformer.py](models/transformer.py), which can significantly reduce the memory usage of the model.
 
 ## Pre-requisites
 1. Python >= 3.6.
