@@ -58,7 +58,9 @@ and [CMGAN](https://github.com/ruizhecao96/CMGAN) to implement this.
 @article{lu2023explicit,
   title={Explicit estimation of magnitude and phase spectra in parallel for high-quality speech enhancement},
   author={Lu, Ye-Xin and Ai, Yang and Ling, Zhen-Hua},
-  journal={arXiv preprint arXiv:2308.08926},
-  year={2023}
+  journal={Neural Networks},
+  volume = {189},
+  pages = {107562},
+  year={2025}
 }
 ```
